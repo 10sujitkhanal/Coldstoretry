@@ -2,7 +2,21 @@ from django.shortcuts import render
 from accounts.models import *
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from base64 import b64decode
+from django.core.files.base import ContentFile 
 # Create your views here.
+
+def farmersave(request):
+    if request.method== 'POST':        
+        name = request.POST["name"]
+        image_data = request.POST["pic"]
+        format, imgstr = image_data.split(';base64,')
+        ext = format.split('/')[-1]
+        pic = ContentFile(b64decode(imgstr), name = 'temp.' + ext)
+        farmer_info= Farmer(farmer_name=name, farmer_pic=pic)
+        farmer_info.save()
+    return render(request, 'add.html')
+
 
 @login_required(login_url='/accounts/login')
 def index(request):

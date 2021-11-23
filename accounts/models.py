@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 class Farmer(models.Model):
     farmer=models.AutoField(primary_key=True)
     farmer_name=models.CharField(max_length=50)
+    farmer_pic = models.ImageField(upload_to='data', null=True)
 
     def __str__(self):
         return self.farmer_name
